@@ -1,6 +1,6 @@
 package market
 
-import "github.com/iaping/go-okx/rest/api"
+import "github.com/ikabirov/go-okx/rest/api"
 
 func NewGetBooks(param *GetBooksParam) (api.IRequest, api.IResponse) {
 	return &api.Request{

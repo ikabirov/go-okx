@@ -1,6 +1,6 @@
 package convert
 
-import "github.com/iaping/go-okx/rest/api"
+import "github.com/ikabirov/go-okx/rest/api"
 
 func NewGetCurrencyPair(param *GetCurrencyPairParam) (api.IRequest, api.IResponse) {
 	return &api.Request{

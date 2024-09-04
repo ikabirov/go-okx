@@ -10,6 +10,7 @@ import (
 const (
 	EndpointPublic           = "wss://ws.okx.com:8443/ws/v5/public"
 	EndpointPrivate          = "wss://ws.okx.com:8443/ws/v5/private"
+	EndpointBusiness         = "wss://ws.okx.com:8443/ws/v5/business"
 	EndpointPublicSimulated  = "wss://wspap.okx.com:8443/ws/v5/public?brokerId=9999"
 	EndpointPrivateSimulated = "wss://wspap.okx.com:8443/ws/v5/private?brokerId=9999"
 
@@ -20,6 +21,7 @@ const (
 var (
 	DefaultClientPublic           = NewClient(EndpointPublic)
 	DefaultClientPrivate          = NewClient(EndpointPrivate)
+	DefaultClientBusiness         = NewClient(EndpointBusiness)
 	DefaultClientPublicSimulated  = NewClient(EndpointPublicSimulated)
 	DefaultClientPrivateSimulated = NewClient(EndpointPrivateSimulated)
 

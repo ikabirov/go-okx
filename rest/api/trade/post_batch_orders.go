@@ -1,6 +1,6 @@
 package trade
 
-import "github.com/iaping/go-okx/rest/api"
+import "github.com/ikabirov/go-okx/rest/api"
 
 func NewPostBatchOrders(param []*PostOrderParam) (api.IRequest, api.IResponse) {
 	return &api.Request{

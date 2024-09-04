@@ -2,8 +2,8 @@ package private
 
 import (
 	"github.com/gorilla/websocket"
-	"github.com/iaping/go-okx/common"
-	"github.com/iaping/go-okx/ws"
+	"github.com/ikabirov/go-okx/common"
+	"github.com/ikabirov/go-okx/ws"
 )
 
 type Private struct {

@@ -1,6 +1,6 @@
 package account
 
-import "github.com/iaping/go-okx/rest/api"
+import "github.com/ikabirov/go-okx/rest/api"
 
 func NewGetBalance(param *GetBalanceParam) (api.IRequest, api.IResponse) {
 	return &api.Request{
