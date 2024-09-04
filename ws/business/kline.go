@@ -1,9 +1,9 @@
-package public
+package business
 
 import (
 	"encoding/json"
 
-	"github.com/iaping/go-okx/ws"
+	"github.com/ikabirov/go-okx/ws"
 )
 
 type HandlerKline func(EventKline)
@@ -24,5 +24,5 @@ func SubscribeKline(args *ws.Args, handler HandlerKline, handlerError ws.Handler
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewBusiness().Subscribe(args, h, handlerError)
 }
