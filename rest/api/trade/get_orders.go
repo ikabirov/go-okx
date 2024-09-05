@@ -40,6 +40,7 @@ type Order struct {
 	TdMode          string `json:"tdMode"`
 	AccFillSz       string `json:"accFillSz"`
 	FillPx          string `json:"fillPx"`
+	FillFee         string `json:"fillFee"`
 	TradeId         string `json:"tradeId"`
 	FillSz          string `json:"fillSz"`
 	FillTime        string `json:"fillTime"`
