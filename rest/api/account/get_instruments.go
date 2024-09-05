@@ -2,11 +2,19 @@ package account
 
 import "github.com/ikabirov/go-okx/rest/api"
 
-func NewGetInstruments() (api.IRequest, api.IResponse) {
+func NewGetInstruments(param *GetInstrumentsParam) (api.IRequest, api.IResponse) {
 	return &api.Request{
 		Path:   "/api/v5/account/instruments",
 		Method: api.MethodGet,
+		Param:  param,
 	}, &GetInstrumentsResponse{}
+}
+
+type GetInstrumentsParam struct {
+	InstType   string `url:"instType"`
+	InstId     string `url:"instId,omitempty"`
+	InstFamily string `url:"instFamily,omitempty"`
+	Uly        string `url:"uly,omitempty"`
 }
 
 type GetInstrumentsResponse struct {
