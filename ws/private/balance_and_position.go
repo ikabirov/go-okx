@@ -1,6 +1,7 @@
 package private
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/common"
@@ -42,7 +43,7 @@ type PosData struct {
 }
 
 // default subscribe
-func SubscribeBalanceAndPosition(auth common.Auth, handler HandlerBalanceAndPosition, handlerError ws.HandlerError) error {
+func SubscribeBalanceAndPosition(ctx context.Context, auth common.Auth, handler HandlerBalanceAndPosition, handlerError ws.HandlerError) error {
 	args := &ws.Args{
 		Channel: "balance_and_position",
 	}
@@ -56,5 +57,5 @@ func SubscribeBalanceAndPosition(auth common.Auth, handler HandlerBalanceAndPosi
 		handler(event)
 	}
 
-	return NewPrivate(auth).Subscribe(args, h, handlerError)
+	return NewPrivate(auth).Subscribe(ctx, args, h, handlerError)
 }

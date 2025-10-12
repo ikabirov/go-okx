@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -35,7 +36,7 @@ type OptSummary struct {
 }
 
 // default subscribe
-func SubscribeOptSummary(instFamily string, handler HandlerOptSummary, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeOptSummary(ctx context.Context, instFamily string, handler HandlerOptSummary, handlerError ws.HandlerError, simulated bool) error {
 	args := &ws.Args{
 		Channel:    "opt-summary",
 		InstFamily: instFamily,
@@ -50,5 +51,5 @@ func SubscribeOptSummary(instFamily string, handler HandlerOptSummary, handlerEr
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

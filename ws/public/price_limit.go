@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -21,7 +22,7 @@ type PriceLimit struct {
 }
 
 // default subscribe
-func SubscribePriceLimit(instId string, handler HandlerPriceLimit, handlerError ws.HandlerError, simulated bool) error {
+func SubscribePriceLimit(ctx context.Context, instId string, handler HandlerPriceLimit, handlerError ws.HandlerError, simulated bool) error {
 	args := &ws.Args{
 		Channel: "price-limit",
 		InstId:  instId,
@@ -36,5 +37,5 @@ func SubscribePriceLimit(instId string, handler HandlerPriceLimit, handlerError 
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

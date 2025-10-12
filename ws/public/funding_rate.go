@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -23,7 +24,7 @@ type FundingRate struct {
 }
 
 // default subscribe
-func SubscribeFundingRate(instId string, handler HandlerFundingRate, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeFundingRate(ctx context.Context, instId string, handler HandlerFundingRate, handlerError ws.HandlerError, simulated bool) error {
 	args := &ws.Args{
 		Channel: "funding-rate",
 		InstId:  instId,
@@ -38,5 +39,5 @@ func SubscribeFundingRate(instId string, handler HandlerFundingRate, handlerErro
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

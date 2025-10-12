@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -14,7 +15,7 @@ type EventMarkPriceKline struct {
 }
 
 // default subscribe
-func SubscribeMarkPriceKline(args *ws.Args, handler HandlerMarkPriceKline, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeMarkPriceKline(ctx context.Context, args *ws.Args, handler HandlerMarkPriceKline, handlerError ws.HandlerError, simulated bool) error {
 	h := func(message []byte) {
 		var event EventMarkPriceKline
 		if err := json.Unmarshal(message, &event); err != nil {
@@ -24,5 +25,5 @@ func SubscribeMarkPriceKline(args *ws.Args, handler HandlerMarkPriceKline, handl
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

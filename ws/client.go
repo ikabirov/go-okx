@@ -1,6 +1,7 @@
 package ws
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -43,8 +44,8 @@ func NewClient(endpoint string) *Client {
 }
 
 // operate
-func (c *Client) Operate(operate *Operate, callback OperateCallback) error {
-	conn, _, err := c.dial()
+func (c *Client) Operate(ctx context.Context, operate *Operate, callback OperateCallback) error {
+	conn, _, err := c.dial(ctx)
 	if err != nil {
 		return err
 	}
@@ -61,8 +62,8 @@ func (c *Client) Operate(operate *Operate, callback OperateCallback) error {
 
 	if operate.Handler != nil {
 		ticker := time.NewTicker(PingTimeout)
-		go c.keepAlive(conn, ticker)
-		go c.messageLoop(conn, operate)
+		go c.keepAlive(ctx, conn, ticker)
+		go c.messageLoop(ctx, conn, operate)
 	}
 
 	return nil
@@ -83,34 +84,42 @@ func (c *Client) MessageOperate(conn *websocket.Conn, operate *Operate) error {
 }
 
 // loop websocket message
-func (c *Client) messageLoop(conn *websocket.Conn, operate *Operate) {
-	defer conn.Close()
+func (c *Client) messageLoop(ctx context.Context, conn *websocket.Conn, operate *Operate) {
 	for {
-		_, message, err := conn.ReadMessage()
-		if err != nil {
-			operate.HandlerError(err)
+		select {
+		case <-ctx.Done():
 			return
+		default:
+			_, message, err := conn.ReadMessage()
+			if err != nil {
+				operate.HandlerError(err)
+				return
+			}
+			operate.Handler(message)
 		}
-		operate.Handler(message)
 	}
 }
 
 // keep websocket alive
-func (c *Client) keepAlive(conn *websocket.Conn, ticker *time.Ticker) {
+func (c *Client) keepAlive(ctx context.Context, conn *websocket.Conn, ticker *time.Ticker) {
 	defer ticker.Stop()
 	for {
-		<-ticker.C
-		deadline := time.Now().Add(PingDeadline)
-		if err := conn.WriteControl(websocket.PingMessage, PingMessage, deadline); err != nil {
+		select {
+		case <-ticker.C:
+			deadline := time.Now().Add(PingDeadline)
+			if err := conn.WriteControl(websocket.PingMessage, PingMessage, deadline); err != nil {
+				return
+			}
+		case <-ctx.Done():
 			return
 		}
 	}
 }
 
 // dial endpoint
-func (c *Client) dial() (*websocket.Conn, *http.Response, error) {
+func (c *Client) dial(ctx context.Context) (*websocket.Conn, *http.Response, error) {
 	if c.Dialer == nil {
 		c.Dialer = websocket.DefaultDialer
 	}
-	return c.Dialer.Dial(c.Endpoint, nil)
+	return c.Dialer.DialContext(ctx, c.Endpoint, nil)
 }

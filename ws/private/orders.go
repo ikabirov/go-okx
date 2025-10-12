@@ -1,6 +1,7 @@
 package private
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/common"
@@ -20,7 +21,7 @@ type Order struct {
 }
 
 // default subscribe
-func SubscribeOrders(args *ws.Args, auth common.Auth, handler HandlerOrders, handlerError ws.HandlerError) error {
+func SubscribeOrders(ctx context.Context, args *ws.Args, auth common.Auth, handler HandlerOrders, handlerError ws.HandlerError) error {
 	args.Channel = "orders"
 
 	h := func(message []byte) {
@@ -32,5 +33,5 @@ func SubscribeOrders(args *ws.Args, auth common.Auth, handler HandlerOrders, han
 		handler(event)
 	}
 
-	return NewPrivate(auth).Subscribe(args, h, handlerError)
+	return NewPrivate(auth).Subscribe(ctx, args, h, handlerError)
 }

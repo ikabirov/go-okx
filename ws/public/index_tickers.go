@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -25,7 +26,7 @@ type IndexTickers struct {
 }
 
 // default subscribe
-func SubscribeIndexTickers(instId string, handler HandlerIndexTickers, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeIndexTickers(ctx context.Context, instId string, handler HandlerIndexTickers, handlerError ws.HandlerError, simulated bool) error {
 	args := &ws.Args{
 		Channel: "index-tickers",
 		InstId:  instId,
@@ -40,5 +41,5 @@ func SubscribeIndexTickers(instId string, handler HandlerIndexTickers, handlerEr
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

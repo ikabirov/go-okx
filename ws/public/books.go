@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -22,7 +23,7 @@ type Book struct {
 }
 
 // default subscribe
-func SubscribeBooks(args *ws.Args, handler HandlerBooks, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeBooks(ctx context.Context, args *ws.Args, handler HandlerBooks, handlerError ws.HandlerError, simulated bool) error {
 	h := func(message []byte) {
 		var event EventBooks
 		if err := json.Unmarshal(message, &event); err != nil {
@@ -32,5 +33,5 @@ func SubscribeBooks(args *ws.Args, handler HandlerBooks, handlerError ws.Handler
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

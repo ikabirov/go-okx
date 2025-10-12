@@ -1,6 +1,7 @@
 package business
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -14,7 +15,7 @@ type EventKline struct {
 }
 
 // default subscribe
-func SubscribeKline(args *ws.Args, handler HandlerKline, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeKline(ctx context.Context, args *ws.Args, handler HandlerKline, handlerError ws.HandlerError, simulated bool) error {
 	h := func(message []byte) {
 		var event EventKline
 		if err := json.Unmarshal(message, &event); err != nil {
@@ -24,5 +25,5 @@ func SubscribeKline(args *ws.Args, handler HandlerKline, handlerError ws.Handler
 		handler(event)
 	}
 
-	return NewBusiness().Subscribe(args, h, handlerError)
+	return NewBusiness().Subscribe(ctx, args, h, handlerError)
 }

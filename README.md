@@ -27,7 +27,7 @@ import (
 )
 
 func main() {
-	auth := common.NewAuth("your apikey", "your key", "your passphrase", false)
+	auth := common.NewAuth("", "your apikey", "your key", "your passphrase", false)
 	client := rest.New("", auth, nil)
 	param := &account.GetBalanceParam{}
 	req, resp := account.NewGetBalance(param)
@@ -56,7 +56,7 @@ func main() {
 	handlerError := func(err error) {
 		panic(err)
 	}
-	if err := public.SubscribeTickers("BTC-USDT", handler, handlerError, false); err != nil {
+	if err := public.SubscribeTickers(context.Background(), "BTC-USDT", handler, handlerError, false); err != nil {
 		panic(err)
 	}
 	select {}
@@ -87,7 +87,7 @@ func main() {
 	handlerError := func(err error) {
 		panic(err)
 	}
-	if err := private.SubscribeOrders(args, auth, handler, handlerError); err != nil {
+	if err := private.SubscribeOrders(context.Background(), args, auth, handler, handlerError); err != nil {
 		panic(err)
 	}
 	select {}

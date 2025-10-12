@@ -1,6 +1,8 @@
 package public
 
 import (
+	"context"
+
 	"github.com/ikabirov/go-okx/ws"
 )
 
@@ -19,7 +21,7 @@ func NewPublic(simulated bool) *Public {
 }
 
 // subscribe
-func (p *Public) Subscribe(args interface{}, handler ws.Handler, handlerError ws.HandlerError) error {
+func (p *Public) Subscribe(ctx context.Context, args any, handler ws.Handler, handlerError ws.HandlerError) error {
 	subscribe := ws.NewOperateSubscribe(args, handler, handlerError)
-	return p.C.Operate(subscribe, nil)
+	return p.C.Operate(ctx, subscribe, nil)
 }

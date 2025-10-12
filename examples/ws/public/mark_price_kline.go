@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -18,7 +19,7 @@ func main() {
 	handlerError := func(err error) {
 		panic(err)
 	}
-	if err := public.SubscribeMarkPriceKline(args, handler, handlerError, false); err != nil {
+	if err := public.SubscribeMarkPriceKline(context.Background(), args, handler, handlerError, false); err != nil {
 		panic(err)
 	}
 	select {}

@@ -1,6 +1,6 @@
 module github.com/ikabirov/go-okx
 
-go 1.17
+go 1.23
 
 require (
 	github.com/google/go-querystring v1.1.0

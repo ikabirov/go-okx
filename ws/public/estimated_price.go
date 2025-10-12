@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -21,7 +22,7 @@ type EstimatedPrice struct {
 }
 
 // default subscribe
-func SubscribeEstimatedPrice(args *ws.Args, handler HandlerEstimatedPrice, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeEstimatedPrice(ctx context.Context, args *ws.Args, handler HandlerEstimatedPrice, handlerError ws.HandlerError, simulated bool) error {
 	args.Channel = "estimated-price"
 
 	h := func(message []byte) {
@@ -33,5 +34,5 @@ func SubscribeEstimatedPrice(args *ws.Args, handler HandlerEstimatedPrice, handl
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

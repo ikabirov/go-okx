@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/ikabirov/go-okx/examples"
@@ -14,7 +15,7 @@ func main() {
 	handlerError := func(err error) {
 		panic(err)
 	}
-	if err := private.SubscribeBalanceAndPosition(examples.Auth, handler, handlerError); err != nil {
+	if err := private.SubscribeBalanceAndPosition(context.Background(), examples.Auth, handler, handlerError); err != nil {
 		panic(err)
 	}
 	select {}

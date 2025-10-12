@@ -1,6 +1,8 @@
 package private
 
 import (
+	"context"
+
 	"github.com/gorilla/websocket"
 	"github.com/ikabirov/go-okx/common"
 	"github.com/ikabirov/go-okx/ws"
@@ -24,13 +26,13 @@ func NewPrivate(auth common.Auth) *Private {
 }
 
 // subscribe
-func (p *Private) Subscribe(args interface{}, handler ws.Handler, handlerError ws.HandlerError) error {
+func (p *Private) Subscribe(ctx context.Context, args any, handler ws.Handler, handlerError ws.HandlerError) error {
 	subscribe := ws.NewOperateSubscribe(args, handler, handlerError)
-	return p.C.Operate(subscribe, p.Login)
+	return p.C.Operate(ctx, subscribe, p.login)
 }
 
 // loging private
-func (p *Private) Login(conn *websocket.Conn) error {
+func (p *Private) login(conn *websocket.Conn) error {
 	args := ws.NewArgsLoginFromAuth(p.Auth)
 	login := ws.NewOperateLogin(args)
 	return p.C.MessageOperate(conn, login)

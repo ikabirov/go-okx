@@ -1,6 +1,7 @@
 package public
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/ikabirov/go-okx/ws"
@@ -22,7 +23,7 @@ type OpenInterest struct {
 }
 
 // default subscribe
-func SubscribeOpenInterest(instId string, handler HandlerOpenInterest, handlerError ws.HandlerError, simulated bool) error {
+func SubscribeOpenInterest(ctx context.Context, instId string, handler HandlerOpenInterest, handlerError ws.HandlerError, simulated bool) error {
 	args := &ws.Args{
 		Channel: "open-interest",
 		InstId:  instId,
@@ -37,5 +38,5 @@ func SubscribeOpenInterest(instId string, handler HandlerOpenInterest, handlerEr
 		handler(event)
 	}
 
-	return NewPublic(simulated).Subscribe(args, h, handlerError)
+	return NewPublic(simulated).Subscribe(ctx, args, h, handlerError)
 }

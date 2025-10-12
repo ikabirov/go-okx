@@ -1,6 +1,8 @@
 package business
 
 import (
+	"context"
+
 	"github.com/ikabirov/go-okx/ws"
 )
 
@@ -16,7 +18,7 @@ func NewBusiness() *Business {
 }
 
 // subscribe
-func (p *Business) Subscribe(args interface{}, handler ws.Handler, handlerError ws.HandlerError) error {
+func (p *Business) Subscribe(ctx context.Context, args any, handler ws.Handler, handlerError ws.HandlerError) error {
 	subscribe := ws.NewOperateSubscribe(args, handler, handlerError)
-	return p.C.Operate(subscribe, nil)
+	return p.C.Operate(ctx, subscribe, nil)
 }
