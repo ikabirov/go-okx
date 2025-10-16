@@ -2,7 +2,6 @@ package rest
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/google/go-querystring/query"
@@ -54,7 +53,10 @@ func (c *Client) Do(req api.IRequest, resp api.IResponse) error {
 		return err
 	}
 	if !resp.IsOk() {
-		return NewOKXError(resp.GetCode(), resp.GetMessage())
+		return OKXError{
+			Code:    resp.GetCode(),
+			Message: resp.GetMessage(),
+		}
 	}
 
 	return nil
@@ -73,7 +75,7 @@ func (c *Client) do(r api.IRequest) ([]byte, error) {
 		return nil, err
 	}
 	if resp.StatusCode() != fasthttp.StatusOK {
-		return nil, fmt.Errorf("http status code:%d, desc:%s", resp.StatusCode(), string(resp.Body()))
+		return nil, NewOKXError(resp.StatusCode(), string(resp.Body()))
 	}
 
 	return resp.Body(), nil
