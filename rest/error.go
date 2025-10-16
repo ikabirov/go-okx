@@ -36,5 +36,5 @@ func NewOKXError(status int, resp string) OKXError {
 var _ error = (*OKXError)(nil)
 
 func (e OKXError) Error() string {
-	return fmt.Sprintf("status: %s,code: %s, message: %s", e.StatusCode, e.Code, e.Message)
+	return fmt.Sprintf("status: %d,code: %s, message: %s", e.StatusCode, e.Code, e.Message)
 }
